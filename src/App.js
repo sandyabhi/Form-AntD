@@ -32,55 +32,18 @@ import Operation from "antd/es/transfer/operation";
 const App = () => {
   const [form] = Form.useForm();
 
-  // const onGenderChange = (value) => {
-  //   switch (value) {
-  //     case "string":
-  //       form.setFieldsValue({
-  //         note: "Hi, string!",
-  //       });
-  //       break;
-  //     case "nested":
-  //       form.setFieldsValue({
-  //         note: "Hi, nested!",
-  //       });
-  //       break;
-  //     case "number":
-  //       form.setFieldsValue({
-  //         note: "Hi number!",
-  //       });
-  //       break;
-  //     default:
-  //   }
-  // };
-  const onFinish = (values) => {
-    console.log(values);
+  const [val, setVal] = useState("string");
+  const handleChange = (value) => {
+    if (value === "nested") {
+      console.log("--nested--");
+      setVal("nested");
+      return (
+        <>
+          <NestedComponent />
+        </>
+      );
+    }
   };
-  // const onReset = () => {
-  //   form.resetFields();
-  // };
-  // const onFill = () => {
-  //   form.setFieldsValue({
-  //     note: "Hello world!",
-  //     gender: "male",
-  //   });
-  // };
-
-  // const [fields, setFields] = useState({
-  //   name: "username",
-  //   value: "Ant Design",
-  // });
-
-  // const [val, SetVal] = useState();
-  // const [counter, setCounter] = useState(1);
-
-  // useEffect(() => {
-  //   const { first, gender } = JSON.stringify(form.getFieldsValue());
-
-  //   const output = `${first}: ${gender}`;
-  //   SetVal(output);
-  //   console.log(output);
-  //   console.log(counter);
-  // }, [counter]);
 
   const convert = (data) => {
     if (data === undefined) return data;
@@ -112,7 +75,11 @@ const App = () => {
               {fields.map((field, index) => (
                 <div
                   key={field.key}
-                  style={{ display: "flex", flexDirection: "row" }}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    rowGap: 16,
+                  }}
                 >
                   <Form.Item
                     name={[field.name, "first"]}
@@ -121,7 +88,11 @@ const App = () => {
                     <Input placeholder="Enter name" />
                   </Form.Item>
                   <Form.Item key={field.key} name={[field.name, "gender"]}>
-                    <Select placeholder="type">
+                    <Select
+                      onChange={handleChange}
+                      value="string"
+                      placeholder="type"
+                    >
                       {["string", "number", "nested"].map((t) => (
                         <>
                           <Select.Option value={t} key={t}>
@@ -131,6 +102,20 @@ const App = () => {
                       ))}
                     </Select>
                   </Form.Item>
+                  <CloseOutlined
+                    onClick={() => {
+                      remove(field.name);
+                    }}
+                  />
+                  {val === "nested" ? (
+                    <>
+                      <NestedComponent field={field} />
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                  {/* Component */}
+                  {/* <NestedComponent field={field} /> */}
                 </div>
               ))}
               <Form.Item>
@@ -143,6 +128,7 @@ const App = () => {
                 >
                   Add
                 </Button>
+                <Button htmlType="reset">Reset</Button>
               </Form.Item>
             </>
           )}
@@ -151,7 +137,8 @@ const App = () => {
           {() => (
             <Typography>
               <pre>
-                {JSON.stringify(convert(form.getFieldsValue().items), null, 2)}
+                {/* {JSON.stringify(convert(form.getFieldsValue().items), null, 2)} */}
+                {JSON.stringify(form.getFieldsValue(), null, 2)}
               </pre>
             </Typography>
           )}
@@ -162,3 +149,105 @@ const App = () => {
 };
 
 export default App;
+
+const NestedComponent = ({ field }) => {
+  return (
+    <>
+      <Form.Item label="List">
+        <Form.List name={[field.name, "list"]}>
+          {(subFields, subOpt) => (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                rowGap: 16,
+              }}
+            >
+              {subFields.map((subField) => (
+                <Space key={subField.key}>
+                  <>
+                    <Form.Item
+                      noStyle
+                      // name={[subField.name, "first"]}
+                      name={[field.name, "nested"]}
+                    >
+                      <Input placeholder="first" />
+                    </Form.Item>
+                    <Form.Item>
+                      {["string", "number"].map((t) => (
+                        <>
+                          <Select.Option value={t} key={t}>
+                            {t}
+                          </Select.Option>
+                        </>
+                      ))}
+                    </Form.Item>
+                    <CloseOutlined
+                      onClick={() => {
+                        subOpt.remove(subField.name);
+                      }}
+                    />
+                  </>
+                </Space>
+              ))}
+              <Button type="dashed" onClick={() => subOpt.add()} block>
+                + Add Sub Item
+              </Button>
+            </div>
+          )}
+        </Form.List>
+      </Form.Item>
+    </>
+  );
+};
+
+const SelectComponent = ({ field }) => {
+  return (
+    <>
+      <Form.Item label="List">
+        <Form.List name={[field.name, "list"]}>
+          {(subFields, subOpt) => (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                rowGap: 16,
+              }}
+            >
+              {subFields.map((subField) => (
+                <Space key={subField.key}>
+                  <>
+                    <Form.Item
+                      noStyle
+                      // name={[subField.name, "first"]}
+                      name={[field.name, "nested"]}
+                    >
+                      <Input placeholder="first" />
+                    </Form.Item>
+                    <Form.Item>
+                      {["string", "number"].map((t) => (
+                        <>
+                          <Select.Option value={t} key={t}>
+                            {t}
+                          </Select.Option>
+                        </>
+                      ))}
+                    </Form.Item>
+                    <CloseOutlined
+                      onClick={() => {
+                        subOpt.remove(subField.name);
+                      }}
+                    />
+                  </>
+                </Space>
+              ))}
+              <Button type="dashed" onClick={() => subOpt.add()} block>
+                + Add Sub Item
+              </Button>
+            </div>
+          )}
+        </Form.List>
+      </Form.Item>
+    </>
+  );
+};
