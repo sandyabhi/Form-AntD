@@ -69,23 +69,48 @@ const App = () => {
   // };
 
   const convert = (data) => {
-    if (data === undefined) return data;
-    console.log(JSON.stringify(data));
-    const transformedArray = data?.map((item) => {
-      const newObj = {};
-      if (item === undefined) return newObj;
-      newObj[item.first] = item.gender;
-      return newObj;
+    const outputObject = {};
+
+    data?.items?.forEach((item) => {
+      const key = item?.first;
+      const value = {};
+
+      if (item?.type === "nested") {
+        item?.list?.forEach((nestedItem) => {
+          value[nestedItem?.first] = nestedItem?.type;
+        });
+        outputObject[key] = value;
+      } else {
+        outputObject[key] = item?.type;
+        // value = item?.type;
+      }
+
+      // outputObject[key] = value;
+      console.log(outputObject);
+      // return outputObject;
     });
-    const mergedObject = Object.assign({}, ...transformedArray);
-    return mergedObject;
+
+    return outputObject;
+
+    // console.log(outputObject);
+
+    // if (data === undefined) return data;
+    // console.log(JSON.stringify(data));
+    // const transformedArray = data?.map((item) => {
+    //   const newObj = {};
+    //   if (item === undefined) return newObj;
+    //   newObj[item.first] = item.gender;
+    //   return newObj;
+    // });
+    // const mergedObject = Object.assign({}, ...transformedArray);
+    // return mergedObject;
   };
 
   return (
     <div
       style={{
         margin: "20px",
-        width: "600px",
+        width: "500px",
       }}
     >
       <Form
@@ -94,98 +119,110 @@ const App = () => {
           items: [{}],
         }}
       >
-        <Form.List name="items">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map((field, index) => (
-                <div
-                  key={field.key}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    rowGap: 16,
-                  }}
-                >
+        <div
+          style={{
+            margin: "20px",
+            width: "500px",
+            paddingLeft: "20px",
+            marginBottom: "15px",
+            borderRadius: "5px",
+            borderLeft: "solid 5px grey",
+          }}
+        >
+          <Form.List name="items">
+            {(fields, { add, remove }) => (
+              <>
+                {fields.map((field, index) => (
                   <div
+                    key={field.key}
                     style={{
                       display: "flex",
-                      justifyContent: "space-between",
-                      flexDirection: "row",
+                      flexDirection: "column",
+                      rowGap: 16,
                     }}
                   >
-                    <Form.Item
-                      name={[field.name, "first"]}
-                      // label={`${index} s`}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        flexDirection: "row",
+                      }}
                     >
-                      <Input placeholder="Field name" />
-                    </Form.Item>
-
-                    <Form.Item key={field.key} name={[field.name, "type"]}>
-                      <Select
-                        onChange={handleChange}
-                        value="string"
-                        placeholder="Field Type"
+                      <Form.Item
+                        name={[field.name, "first"]}
+                        // label={`${index} s`}
                       >
-                        {["string", "number", "nested"].map((t) => (
-                          <>
-                            <Select.Option value={t} key={t}>
-                              {t}
-                            </Select.Option>
-                          </>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                    {/* <CloseOutlined
+                        <Input placeholder="Field name" />
+                      </Form.Item>
+
+                      <Form.Item key={field.key} name={[field.name, "type"]}>
+                        <Select
+                          onChange={handleChange}
+                          value="string"
+                          placeholder="Field Type"
+                        >
+                          {["string", "number", "nested"].map((t) => (
+                            <>
+                              <Select.Option value={t} key={t}>
+                                {t}
+                              </Select.Option>
+                            </>
+                          ))}
+                        </Select>
+                      </Form.Item>
+                      {/* <CloseOutlined
                     onClick={() => {
                       remove(field.name);
                     }}
                   /> */}
-                    <Form.Item>
-                      <Button
-                        htmlType="reset"
-                        type="primary"
-                        style={{ backgroundColor: "orangered" }}
-                        icon={<MinusCircleOutlined />}
-                        onClick={() => remove(field.name)}
-                      >
-                        Remove
-                      </Button>
-                    </Form.Item>
+                      <Form.Item>
+                        <Button
+                          htmlType="reset"
+                          type="primary"
+                          style={{ backgroundColor: "orangered" }}
+                          icon={<MinusCircleOutlined />}
+                          onClick={() => remove(field.name)}
+                        >
+                          Remove
+                        </Button>
+                      </Form.Item>
+                    </div>
+                    {val === "nested" ? (
+                      <>
+                        <NestedComponent field={field} />
+                      </>
+                    ) : (
+                      <></>
+                    )}
+                    {/* Component */}
+                    {/* <NestedComponent field={field} /> */}
                   </div>
-                  {val === "nested" ? (
-                    <>
-                      <NestedComponent field={field} />
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                  {/* Component */}
-                  {/* <NestedComponent field={field} /> */}
-                </div>
-              ))}
+                ))}
 
-              <Form.Item>
-                <Button
-                  type="primary"
-                  block
-                  onClick={() => {
-                    add();
-                  }}
-                  icon={<PlusOutlined />}
-                >
-                  Add Item
-                </Button>
-                {/* <Button htmlType="reset">Reset</Button> */}
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    block
+                    onClick={() => {
+                      add();
+                    }}
+                    icon={<PlusOutlined />}
+                  >
+                    Add Item
+                  </Button>
+                  {/* <Button htmlType="reset">Reset</Button> */}
+                </Form.Item>
+              </>
+            )}
+          </Form.List>
+        </div>
+        {/* <div></div> */}
         <Form.Item noStyle shouldUpdate>
           {() => (
             <Typography>
               <pre>
-                {/* {JSON.stringify(convert(form.getFieldsValue().items), null, 2)} */}
-                {JSON.stringify(form.getFieldsValue(), null, 2)}
+                {JSON.stringify(convert(form.getFieldsValue()), null, 2)}
+                {/* {JSON.stringify(form.getFieldsValue(), null, 2)} */}
               </pre>
             </Typography>
           )}
@@ -202,55 +239,69 @@ const NestedComponent = ({ field }) => {
     <div
       style={{
         width: "100%",
-        marginLeft: "55px",
+        marginLeft: "30px",
+        paddingLeft: "20px",
+        marginBottom: "15px",
+        borderRadius: "5px",
+        borderLeft: "solid 5px grey",
       }}
     >
-      <Form.Item label="List">
+      <Form.Item
+        shouldUpdate={(prevValues, curValues) =>
+          prevValues.additional !== curValues.additional
+        }
+        // label="List"
+      >
         <Form.List name={[field.name, "list"]}>
-          {(subFields, subOpt) => (
+          {(subFields, { add, remove }) => (
             <div
               style={{ display: "flex", flexDirection: "column", rowGap: 16 }}
             >
               {subFields.map((subField) => (
                 <div
+                  key={subField.key}
                   style={{
                     display: "flex",
                     flexDirection: "row",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <Space
-                    key={subField.key}
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
+                  <Form.Item name={[subField.name, "first"]}>
+                    <Input placeholder="Field Name" />
+                  </Form.Item>
+                  <Form.Item key={field.key} name={[subField.name, "type"]}>
+                    <Select value="string" placeholder="Field Type">
+                      {["string", "number", "nested"].map((t) => (
+                        <>
+                          <Select.Option value={t} key={t}>
+                            {t}
+                          </Select.Option>
+                        </>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item>
+                    <Button
+                      htmlType="reset"
+                      type="primary"
+                      style={{ backgroundColor: "orangered" }}
+                      icon={<MinusCircleOutlined />}
+                      onClick={() => remove(subField.name)}
+                    >
+                      Remove
+                    </Button>
+                  </Form.Item>
+                  {/* <CloseOutlined
+                    onClick={() => {
+                      subOpt.remove(subField.name);
                     }}
-                  >
-                    <Form.Item noStyle name={[subField.name, "first"]}>
-                      <Input placeholder="first" />
-                    </Form.Item>
-                    <Form.Item key={field.key} name={[subField.name, "type"]}>
-                      <Select value="string" placeholder="type">
-                        {["string", "number", "nested"].map((t) => (
-                          <>
-                            <Select.Option value={t} key={t}>
-                              {t}
-                            </Select.Option>
-                          </>
-                        ))}
-                      </Select>
-                    </Form.Item>
-                    <CloseOutlined
-                      onClick={() => {
-                        subOpt.remove(subField.name);
-                      }}
-                    />
-                  </Space>
+                  /> */}
                 </div>
               ))}
               <Button
                 type="primary"
                 icon={<PlusOutlined />}
-                onClick={() => subOpt.add()}
+                onClick={() => add()}
                 block
               >
                 Add Sub Item
