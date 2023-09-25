@@ -1,6 +1,5 @@
 import { PlusOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Select } from "antd";
-import "../App.css";
 
 export const NestedForm = ({ field }) => {
   return (

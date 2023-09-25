@@ -1,3 +1,8 @@
+# [Video LINK](https://vimeo.com/867917594?share=copy)
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -69,72 +74,3 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-<!-- const NestedComponent = ({ field }) => {
-  return (
-    <div
-      style={{
-        width: "100%",
-        marginLeft: "30px",
-        paddingLeft: "20px",
-        marginBottom: "15px",
-        borderRadius: "5px",
-        borderLeft: "solid 5px grey",
-      }}
-    >
-      <Form.Item>
-        <Form.List name={[field.name, "list"]}>
-          {(subFields, { add, remove }) => (
-            <div
-              style={{ display: "flex", flexDirection: "column", rowGap: 16 }}
-            >
-              {subFields.map((subField) => (
-                <div
-                  key={subField.key}
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Form.Item name={[subField.name, "first"]}>
-                    <Input placeholder="Field Name" />
-                  </Form.Item>
-                  <Form.Item key={field.key} name={[subField.name, "type"]}>
-                    <Select value="string" placeholder="Field Type">
-                      {["string", "number", "nested"].map((t) => (
-                        <>
-                          <Select.Option value={t} key={t}>
-                            {t}
-                          </Select.Option>
-                        </>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                  <Form.Item>
-                    <Button
-                      htmlType="reset"
-                      type="primary"
-                      style={{ backgroundColor: "orangered" }}
-                      icon={<MinusCircleOutlined />}
-                      onClick={() => remove(subField.name)}
-                    >
-                      Remove
-                    </Button>
-                  </Form.Item>
-                </div>
-              ))}
-              <Button
-                type="primary"
-                icon={<PlusOutlined />}
-                onClick={() => add()}
-                block
-              >
-                Add Sub Item
-              </Button>
-            </div>
-          )}
-        </Form.List>
-      </Form.Item>
-    </div>
-  );
-}; -->

@@ -12,11 +12,6 @@ const App = () => {
     if (value === "nested") {
       console.log("--nested--");
       setVal("nested");
-      // return (
-      //   <>
-      //     <NestedComponent />
-      //   </>
-      // );
     }
   };
 
@@ -39,9 +34,7 @@ const App = () => {
         else outputObject[key] = item?.type;
       }
 
-      // outputObject[key] = value;
       console.log(outputObject);
-      // return outputObject;
     });
 
     return outputObject;
