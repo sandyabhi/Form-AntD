@@ -7,11 +7,11 @@ import { NestedForm } from "./components/NestedComponent";
 const App = () => {
   const [form] = Form.useForm();
 
-  const [val, setVal] = useState("string");
+  const [selectedValue, setSelectedValue] = useState("string");
   const handleChange = (value) => {
     if (value === "nested") {
-      console.log("--nested--");
-      setVal("nested");
+      // console.log("--nested--");
+      setSelectedValue("nested");
     }
   };
 
@@ -106,7 +106,7 @@ const App = () => {
                         </Button>
                       </Form.Item>
                     </div>
-                    {val === "nested" ? (
+                    {selectedValue === "nested" ? (
                       <>
                         {/* <NestedComponent field={field} /> */}
                         <NestedForm field={field} />

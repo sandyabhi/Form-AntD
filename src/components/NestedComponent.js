@@ -33,10 +33,10 @@ export const NestedForm = ({ field }) => {
                   </Form.Item>
                   <Form.Item key={field.key} name={[subField.name, "type"]}>
                     <Select value="string" placeholder="Field Type">
-                      {["string", "number", "nested"].map((t) => (
+                      {["string", "number", "nested"].map((selectedType) => (
                         <>
-                          <Select.Option value={t} key={t}>
-                            {t}
+                          <Select.Option value={selectedType}>
+                            {selectedType}
                           </Select.Option>
                         </>
                       ))}
